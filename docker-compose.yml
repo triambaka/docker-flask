@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+
+  server:
+    container_name: 'server'
+    build: ./server
+    ports:
+      - '5000:5000'
+
+  # Second service (container): the client.
+  # We use the keyword 'client' for the server.
+  client:
+    container_name: 'client'
+    # Here 'client/ corresponds to the path to the client folder
+    # that contains the Dockerfile to use.
+    build: ./client
+
+    # The command to execute once the image is created.
+    # The following command will execute "python ./client.py".
+    depends_on:
+      - server
+
+networks:
+  default:
+    external:
+      name: alpine-net
